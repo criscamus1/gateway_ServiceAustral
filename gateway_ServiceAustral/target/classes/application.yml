@@ -1,0 +1,80 @@
+server:
+  port: ${PORT:8088}
+
+spring:
+  application:
+    name: gateway-service-austral
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: auth-service
+              uri: ${AUTH_SERVICE_URL:http://localhost:8089}
+              predicates:
+                - Path=/api/auth/**
+              filters:
+                - StripPrefix=0
+
+            - id: usuarios-service
+              uri: ${USUARIOS_SERVICE_URL:http://localhost:8080}
+              predicates:
+                - Path=/api/usuarios/**
+
+            - id: alimentos-service
+              uri: ${ALIMENTOS_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/alimentos/**
+
+            - id: centros-service
+              uri: ${CENTROS_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/centros/**
+
+            - id: jaulas-service
+              uri: ${JAULAS_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/jaulas/**
+
+            - id: mortalidad-service
+              uri: ${MORTALIDAD_SERVICE_URL:http://localhost:8084}
+              predicates:
+                - Path=/api/mortalidad/**
+
+            - id: veterinario-service
+              uri: ${VETERINARIO_SERVICE_URL:http://localhost:8085}
+              predicates:
+                - Path=/api/veterinarios/**
+
+            - id: tratamientos-service
+              uri: ${TRATAMIENTOS_SERVICE_URL:http://localhost:8086}
+              predicates:
+                - Path=/api/tratamientos/**
+
+            - id: alertas-service
+              uri: ${ALERTAS_SERVICE_URL:http://localhost:8087}
+              predicates:
+                - Path=/api/alertas/**
+
+            - id: reportes-service
+              uri: ${REPORTES_SERVICE_URL:http://localhost:8090}
+              predicates:
+                - Path=/api/reportes/**
+
+          default-filters:
+            - AddResponseHeader=X-Gateway, Service-Austral
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    reactor.netty.http.client: INFO
