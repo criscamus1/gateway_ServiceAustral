@@ -4,58 +4,70 @@ server:
 spring:
   application:
     name: gateway-service-austral
+
   cloud:
     gateway:
       server:
         webflux:
           routes:
+
+            # AUTH
             - id: auth-service
               uri: ${AUTH_SERVICE_URL:http://localhost:8089}
               predicates:
-                - Path=/api/auth/**
+                - Path=/api/v1/auth/**
               filters:
                 - StripPrefix=0
 
+            # USUARIOS
             - id: usuarios-service
               uri: ${USUARIOS_SERVICE_URL:http://localhost:8080}
               predicates:
-                - Path=/api/usuarios/**
+                - Path=/api/v1/usuarios/**
 
+            # CENTROS
+            - id: centros-service
+              uri: ${CENTROS_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/v1/centros/**
+
+            # ALIMENTOS
             - id: alimentos-service
               uri: ${ALIMENTOS_SERVICE_URL:http://localhost:8081}
               predicates:
                 - Path=/api/alimentos/**
 
-            - id: centros-service
-              uri: ${CENTROS_SERVICE_URL:http://localhost:8082}
-              predicates:
-                - Path=/api/centros/**
-
+            # JAULAS
             - id: jaulas-service
               uri: ${JAULAS_SERVICE_URL:http://localhost:8083}
               predicates:
                 - Path=/api/jaulas/**
 
+            # MORTALIDAD
             - id: mortalidad-service
               uri: ${MORTALIDAD_SERVICE_URL:http://localhost:8084}
               predicates:
                 - Path=/api/mortalidad/**
 
+            # VETERINARIO
             - id: veterinario-service
               uri: ${VETERINARIO_SERVICE_URL:http://localhost:8085}
               predicates:
                 - Path=/api/veterinarios/**
 
+            # TRATAMIENTOS
             - id: tratamientos-service
               uri: ${TRATAMIENTOS_SERVICE_URL:http://localhost:8086}
               predicates:
                 - Path=/api/tratamientos/**
 
+            # ALERTAS
             - id: alertas-service
               uri: ${ALERTAS_SERVICE_URL:http://localhost:8087}
               predicates:
                 - Path=/api/alertas/**
 
+            # REPORTES
             - id: reportes-service
               uri: ${REPORTES_SERVICE_URL:http://localhost:8090}
               predicates:
@@ -70,6 +82,7 @@ management:
     web:
       exposure:
         include: health,info,gateway
+
   endpoint:
     health:
       show-details: always
