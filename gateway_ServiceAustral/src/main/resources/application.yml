@@ -11,81 +11,62 @@ spring:
         webflux:
           routes:
 
-            # AUTH
+server:
+  port: ${PORT:8088}
+
+spring:
+  application:
+    name: gateway-service-austral
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+
             - id: auth-service
               uri: ${AUTH_SERVICE_URL:https://authservice-serviceaustral.onrender.com}
               predicates:
                 - Path=/api/v1/auth/**
-              filters:
-                - StripPrefix=0
 
-            # USUARIOS
             - id: usuarios-service
-              uri: ${USUARIOS_SERVICE_URL:http://localhost:8080}
+              uri: ${USUARIOS_SERVICE_URL:https://usuarios-serviceaustral-1.onrender.com}
               predicates:
                 - Path=/api/v1/usuarios/**
 
-            # CENTROS
             - id: centros-service
-              uri: ${CENTROS_SERVICE_URL:http://localhost:8082}
+              uri: ${CENTROS_SERVICE_URL:https://centros-serviceaustral.onrender.com}
               predicates:
                 - Path=/api/v1/centros/**
 
-            # ALIMENTOS
-            - id: alimentos-service
-              uri: ${ALIMENTOS_SERVICE_URL:http://localhost:8081}
-              predicates:
-                - Path=/api/alimentos/**
-
-            # JAULAS
             - id: jaulas-service
               uri: ${JAULAS_SERVICE_URL:https://jaulas-serviceaustral.onrender.com}
               predicates:
-                - Path=/api/jaulas/**
+                - Path=/api/v1/jaulas/**
 
-            # MORTALIDAD
-            - id: mortalidad-service
-              uri: ${MORTALIDAD_SERVICE_URL:http://localhost:8084}
+            - id: monitoreo-service
+              uri: ${MONITOREO_SERVICE_URL:https://monitoreo-serviceindustrial.onrender.com}
               predicates:
-                - Path=/api/mortalidad/**
+                - Path=/api/v1/monitoreo/**
 
-            # VETERINARIO
+            - id: reportes-service
+              uri: ${REPORTES_SERVICE_URL:https://reportes-serviceaustral.onrender.com}
+              predicates:
+                - Path=/api/v1/reportes/**
+
             - id: veterinario-service
               uri: ${VETERINARIO_SERVICE_URL:http://localhost:8085}
               predicates:
-                - Path=/api/veterinarios/**
-
-            # TRATAMIENTOS
-            - id: tratamientos-service
-              uri: ${TRATAMIENTOS_SERVICE_URL:http://localhost:8086}
-              predicates:
-                - Path=/api/tratamientos/**
-
-            # ALERTAS
-            - id: alertas-service
-              uri: ${ALERTAS_SERVICE_URL:http://localhost:8087}
-              predicates:
-                - Path=/api/alertas/**
-
-            # REPORTES
-            - id: reportes-service
-              uri: ${REPORTES_SERVICE_URL:http://localhost:8090}
-              predicates:
-                - Path=/api/reportes/**
+                - Path=/api/v1/veterinarios/**
 
           default-filters:
             - AddResponseHeader=X-Gateway, Service-Austral
-            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info,gateway
-
-  endpoint:
-    health:
-      show-details: always
 
 logging:
   level:
