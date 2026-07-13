@@ -40,7 +40,6 @@ spring:
             # JAULAS
             - id: jaulas-service
               uri: ${JAULAS_SERVICE_URL:https://jaulas-serviceaustral.onrender.com}
-}
               predicates:
                 - Path=/api/jaulas/**
 
